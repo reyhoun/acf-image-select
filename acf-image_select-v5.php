@@ -1,8 +1,8 @@
 <?php
 
 class acf_field_image_select extends acf_field {
-	
-	
+
+
 	/*
 	*  __construct
 	*
@@ -15,34 +15,34 @@ class acf_field_image_select extends acf_field {
 	*  @param	n/a
 	*  @return	n/a
 	*/
-	
+
 	function __construct() {
-		
+
 		/*
 		*  name (string) Single word, no spaces. Underscores allowed
 		*/
-		
+
 		$this->name = 'image_select';
-		
-		
+
+
 		/*
 		*  label (string) Multiple words, can include spaces, visible when selecting a field type
 		*/
-		
+
 		$this->label = __('Image Select', 'acf-image_select');
-		
-		
+
+
 		/*
 		*  category (string) basic | content | choice | relational | jquery | layout | CUSTOM GROUP NAME
 		*/
-		
+
 		$this->category = 'choice';
-		
-		
+
+
 		/*
 		*  defaults (array) Array of default settings which are merged into the field object. These are used later in settings
 		*/
-		
+
 		$this->defaults = array(
 			'choices'			=>	array(),
 			'default_value'		=>	'',
@@ -50,24 +50,24 @@ class acf_field_image_select extends acf_field {
 			'image_path'		=> '/images/',
 			'image_extension'   => 'png',
 		);
-		
-		
+
+
 		/*
 		*  l10n (array) Array of strings that are used in JavaScript. This allows JS strings to be translated in PHP and loaded via:
 		*  var message = acf._e('image_select', 'error');
 		*/
-		
+
 		$this->l10n = array(
 			'error'	=> __('Error! Please enter a higher value', 'acf-image_select'),
 		);
-		
-				
+
+
 		// do not delete!
     	parent::__construct();
-    	
+
 	}
-	
-	
+
+
 	/*
 	*  render_field_settings()
 	*
@@ -80,9 +80,9 @@ class acf_field_image_select extends acf_field {
 	*  @param	$field (array) the $field being edited
 	*  @return	n/a
 	*/
-	
+
 	function render_field_settings( $field ) {
-		
+
 		/*
 		*  acf_render_field_setting
 		*
@@ -92,33 +92,33 @@ class acf_field_image_select extends acf_field {
 		*  More than one setting can be added by copy/paste the above code.
 		*  Please note that you must also have a matching $defaults value for the field name (font_size)
 		*/
-		
+
 		// vars
 		$key = $field['name'];
 
 		// implode checkboxes so they work in a textarea
 		if( is_array($field['choices']) )
-		{		
+		{
 			foreach( $field['choices'] as $k => $v )
 			{
 				$field['choices'][ $k ] = $k . ' : ' . $v;
 			}
 			$field['choices'] = implode("\n", $field['choices']);
 		}
-			
+
 		acf_render_field_setting( $field, array(
 			'label'			=> __('Choices','acf-image_select'),
 			'instructions'	=> __('Enter your choices one per line <br /> Red <br /> Blue <br /> red : Red <br /> blue : Blue <br /><span style="color:#BC0B0B">Please note:</span> The first value of each choices will used as name of image.<br />Like for "<strong>Blue</strong>" or "<strong>blue : Blue</strong>", the image name will be "<strong>blue.png</strong>"','acf-image_select'),
 			'type'			=> 'textarea',
 			'name'			=> 'choices',
 		));
-		
+
 		acf_render_field_setting( $field, array(
 			'label'			=> __('Default Value','acf-image_select'),
 			'type'			=> 'text',
 			'name'			=> 'default_value',
 		));
-		
+
 		acf_render_field_setting( $field, array(
 			'label'			=> __('Allow Multiple Choices?','acf-image_select'),
 			'type'			=> 'radio',
@@ -129,23 +129,23 @@ class acf_field_image_select extends acf_field {
 			'layout'	=>	'horizontal',
 			'name'			=> 'multiple',
 		));
-			
+
 		acf_render_field_setting( $field, array(
 			'label'			=> __('Image Path','acf-image_select'),
 			'instructions'	=> __('Enter folder URL for images <b>based on current theme</b>.','acf-image_select'),
 			'type'			=> 'text',
 			'name'			=> 'image_path',
 		));
-					
+
 		acf_render_field_setting( $field, array(
 			'label'			=> __('Image Extension','acf-image_select'),
 			'type'			=> 'text',
 			'name'			=> 'image_extension',
 		));
 	}
-	
-	
-	
+
+
+
 	/*
 	*  render_field()
 	*
@@ -160,9 +160,9 @@ class acf_field_image_select extends acf_field {
 	*  @param	$field (array) the $field being edited
 	*  @return	n/a
 	*/
-	
+
 	function render_field( $field ) {
-	
+
 		// vars
 		$i = 0;
 		$e = '<ul class="acf-image-select-list ' . esc_attr($field['class']) . '" data-image-select-multiple="'.$field['multiple'].'">';
@@ -202,7 +202,7 @@ class acf_field_image_select extends acf_field {
 
 					$e .= '<label for="' . $field_id . '" class="'.$class.'">';
 						$e .= '<input id="' . $field_id . '" class="item-input" type="radio" name="' . esc_attr($field['name']) . '" value="' . esc_attr($key) . '" ' .  $atts  . ' />';
-						$e .= '<img class="item-image ' . $field_id . '-image" alt="'.$value.'" src="' . get_template_directory_uri() . $field['image_path'].esc_attr($key).'.'.$field['image_extension'].'">';
+						$e .= '<img class="item-image ' . $field_id . '-image" alt="'.$value.'" src="' . get_stylesheet_directory_uri() . $field['image_path'].esc_attr($key).'.'.$field['image_extension'].'">';
 						$e .= '<br/>';
 						$e .= '<span class="item-title ' . $field_id . '-title">'.$value.'</span>';
 					$e .= '</label>';
@@ -215,8 +215,8 @@ class acf_field_image_select extends acf_field {
 		echo $e;
 
 	}
-	
-		
+
+
 	/*
 	*  input_admin_enqueue_scripts()
 	*
@@ -231,26 +231,26 @@ class acf_field_image_select extends acf_field {
 	*  @return	n/a
 	*/
 
-	
+
 	function input_admin_enqueue_scripts() {
-		
+
 		$dir = plugin_dir_url( __FILE__ );
-		
-		
+
+
 		// register & include JS
 		wp_register_script( 'acf-input-image_select', "{$dir}js/image-select.js" );
 		wp_enqueue_script('acf-input-image_select');
-		
-		
+
+
 		// register & include CSS
-		wp_register_style( 'acf-input-image_select', "{$dir}css/image-select.css" ); 
+		wp_register_style( 'acf-input-image_select', "{$dir}css/image-select.css" );
 		wp_enqueue_style('acf-input-image_select');
-		
-		
+
+
 	}
-	
-	
-	
+
+
+
 	/*
 	*  input_admin_head()
 	*
@@ -266,21 +266,21 @@ class acf_field_image_select extends acf_field {
 	*/
 
 	/*
-		
+
 	function input_admin_head() {
-	
-		
-		
+
+
+
 	}
-	
+
 	*/
-	
-	
+
+
 	/*
    	*  input_form_data()
    	*
    	*  This function is called once on the 'input' page between the head and footer
-   	*  There are 2 situations where ACF did not load during the 'acf/input_admin_enqueue_scripts' and 
+   	*  There are 2 situations where ACF did not load during the 'acf/input_admin_enqueue_scripts' and
    	*  'acf/input_admin_head' actions because ACF did not know it was going to be used. These situations are
    	*  seen on comments / user edit forms on the front end. This function will always be called, and includes
    	*  $args that related to the current screen such as $args['post_id']
@@ -292,18 +292,18 @@ class acf_field_image_select extends acf_field {
    	*  @param	$args (array)
    	*  @return	n/a
    	*/
-   	
+
    	/*
-   	
+
    	function input_form_data( $args ) {
-	   	
-		
-	
+
+
+
    	}
-   	
+
    	*/
-	
-	
+
+
 	/*
 	*  input_admin_footer()
 	*
@@ -319,16 +319,16 @@ class acf_field_image_select extends acf_field {
 	*/
 
 	/*
-		
+
 	function input_admin_footer() {
-	
-		
-		
+
+
+
 	}
-	
+
 	*/
-	
-	
+
+
 	/*
 	*  field_group_admin_enqueue_scripts()
 	*
@@ -344,14 +344,14 @@ class acf_field_image_select extends acf_field {
 	*/
 
 	/*
-	
+
 	function field_group_admin_enqueue_scripts() {
-		
+
 	}
-	
+
 	*/
 
-	
+
 	/*
 	*  field_group_admin_head()
 	*
@@ -367,11 +367,11 @@ class acf_field_image_select extends acf_field {
 	*/
 
 	/*
-	
+
 	function field_group_admin_head() {
-	
+
 	}
-	
+
 	*/
 
 
@@ -389,18 +389,18 @@ class acf_field_image_select extends acf_field {
 	*  @param	$field (array) the field array holding all the field options
 	*  @return	$value
 	*/
-	
+
 	/*
-	
+
 	function load_value( $value, $post_id, $field ) {
-		
+
 		return $value;
-		
+
 	}
-	
+
 	*/
-	
-	
+
+
 	/*
 	*  update_value()
 	*
@@ -415,18 +415,18 @@ class acf_field_image_select extends acf_field {
 	*  @param	$field (array) the field array holding all the field options
 	*  @return	$value
 	*/
-	
+
 	/*
-	
+
 	function update_value( $value, $post_id, $field ) {
-		
+
 		return $value;
-		
+
 	}
-	
+
 	*/
-	
-	
+
+
 	/*
 	*  format_value()
 	*
@@ -442,35 +442,35 @@ class acf_field_image_select extends acf_field {
 	*
 	*  @return	$value (mixed) the modified value
 	*/
-		
+
 	/*
-	
+
 	function format_value( $value, $post_id, $field ) {
-		
+
 		// bail early if no value
 		if( empty($value) ) {
-		
+
 			return $value;
-			
+
 		}
-		
-		
+
+
 		// apply setting
-		if( $field['font_size'] > 12 ) { 
-			
+		if( $field['font_size'] > 12 ) {
+
 			// format the value
 			// $value = 'something';
-		
+
 		}
-		
-		
+
+
 		// return
 		return $value;
 	}
-	
+
 	*/
-	
-	
+
+
 	/*
 	*  validate_value()
 	*
@@ -488,33 +488,33 @@ class acf_field_image_select extends acf_field {
 	*  @param	$input (string) the corresponding input name for $_POST value
 	*  @return	$valid
 	*/
-	
+
 	/*
-	
+
 	function validate_value( $valid, $value, $field, $input ){
-		
+
 		// Basic usage
 		if( $value < $field['custom_minimum_setting'] )
 		{
 			$valid = false;
 		}
-		
-		
+
+
 		// Advanced usage
 		if( $value < $field['custom_minimum_setting'] )
 		{
 			$valid = __('The value is too little!','acf-image_select'),
 		}
-		
-		
+
+
 		// return
 		return $valid;
-		
+
 	}
-	
+
 	*/
-	
-	
+
+
 	/*
 	*  delete_value()
 	*
@@ -529,18 +529,18 @@ class acf_field_image_select extends acf_field {
 	*  @param	$key (string) the $meta_key which the value was deleted
 	*  @return	n/a
 	*/
-	
+
 	/*
-	
+
 	function delete_value( $post_id, $key ) {
-		
-		
-		
+
+
+
 	}
-	
+
 	*/
-	
-	
+
+
 	/*
 	*  load_field()
 	*
@@ -548,23 +548,23 @@ class acf_field_image_select extends acf_field {
 	*
 	*  @type	filter
 	*  @date	23/01/2013
-	*  @since	3.6.0	
+	*  @since	3.6.0
 	*
 	*  @param	$field (array) the field array holding all the field options
 	*  @return	$field
 	*/
-	
+
 	/*
-	
+
 	function load_field( $field ) {
-		
+
 		return $field;
-		
-	}	
-	
+
+	}
+
 	*/
-	
-	
+
+
 	/*
 	*  update_field()
 	*
@@ -577,11 +577,11 @@ class acf_field_image_select extends acf_field {
 	*  @param	$field (array) the field array holding all the field options
 	*  @return	$field
 	*/
-	
 
-	
+
+
 	function update_field( $field ) {
-		
+
 				// check if is array. Normal back end edit posts a textarea, but a user might use update_field from the front end
 		if( is_array( $field['choices'] ))
 		{
@@ -605,7 +605,7 @@ class acf_field_image_select extends acf_field {
 			}
 			else
 			{
-				// no multiple lines! 
+				// no multiple lines!
 				$field['choices'] = array($field['choices']);
 			}
 
@@ -631,12 +631,12 @@ class acf_field_image_select extends acf_field {
 
 
 		return $field;
-		
-	}	
-	
 
-	
-	
+	}
+
+
+
+
 	/*
 	*  delete_field()
 	*
@@ -649,18 +649,18 @@ class acf_field_image_select extends acf_field {
 	*  @param	$field (array) the field array holding all the field options
 	*  @return	n/a
 	*/
-	
+
 	/*
-	
+
 	function delete_field( $field ) {
-		
-		
-		
-	}	
-	
+
+
+
+	}
+
 	*/
-	
-	
+
+
 }
 
 
